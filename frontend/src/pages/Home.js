@@ -1,5 +1,4 @@
 import { NavLink as Link } from 'react-router-dom';
-import funnelImg from "../tBTC.png"
 
 function Home () {
     return (

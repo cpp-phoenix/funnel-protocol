@@ -1,10 +1,9 @@
 import { ethers } from "ethers";
-import { simulateContract, writeContract } from '@wagmi/core'
+import { simulateContract, writeContract, waitForTransactionReceipt } from '@wagmi/core'
 import { useEffect, useState } from "react";
 import { CHAINS_DATA, ARBITRUM_SEPOLIA, TOKENS_LIST } from "../constants/constants";
 import { useAccount, useNetwork, useWalletClient, usePublicClient } from 'wagmi'
 import { config } from "../App";
-import { waitForTransactionReceipt } from '@wagmi/core'
 import FunnelProtocolABI from "../abis/FunnelProtocol.json"
 import DummyERC20ABI from "../abis/DummyERC20.json"
 
@@ -52,12 +51,6 @@ function Mint () {
 
             // const signedDummyERC20 = dummyERC20.connect(signer)
             // const txn = await signedDummyERC20.approve(CHAINS_DATA[chain.id]["fp"], formattedAmount)
-
-            console.log(config)
-            console.log(CHAINS_DATA[chain.id]["tokens"][selectToken].address)
-            console.log(CHAINS_DATA[chain.id]["fp"])
-            console.log(formattedAmount)
-            console.log(DummyERC20ABI.length)
 
             const { request } = await simulateContract(config, {
                 abi:DummyERC20ABI,

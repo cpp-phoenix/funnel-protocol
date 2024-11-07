@@ -30,7 +30,7 @@ export const CHAINS_DATA = {
     },
     999: {
         name: "FUNNEL_TESTNET",
-        rpc: "funnel-testnet.alt.technology",
+        rpc: "https://funnel-testnet.alt.technology",
         fp: "0x060c7365eA2D6F9efDD5787153dc4ee8D94cc5A7",
         fpv: "0x64a664711Abc0a37fCc963B649b8396d40f8BB69",
         fBTC_logo: "https://assets.coingecko.com/coins/images/780/standard/bitcoin-cash-circle.png?1696501932",
