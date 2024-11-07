@@ -23,7 +23,9 @@ function Redeem () {
     const [mintLoading, setMintLoading] = useState(false)
 
     useEffect(() => {
-        updateAmount(selectToken)
+        if(chain.id === ARBITRUM_SEPOLIA) {
+            updateAmount(selectToken)
+        }
     }, [])
 
     const checkAllowance = async (amount) => {
@@ -130,60 +132,67 @@ function Redeem () {
             settbtcEstimation(0)
         }
     }
-
-    return (
-        <div className="flex flex-row items-center justify-center  w-full h-4/5">
-            <div className="flex flex-col justify-between rounded-lg w-[500px] h-[270px] bg-[#304256] border border-black p-3">
-                <div className="text-[#C7F284]">
-                    <div className="flex w-full py-1 text-2xl text-white">Redeem</div>
-                    <div className="static rounded border border-black flex justify-between w-full h-32 bg-[#121D28] flex items-center px-4">
-                        <div className="space-y-1">
-                            <div className="text-md">Amount</div>
-                            <input onChange={(e) => {estimatetBTC(e.target.value)}} type="number" id="first_name" class="focus:ring-[#121D28] focus:border-[#121D28] dark:focus:ring-[#121D28]dark:focus:border-[#121D28] bg-[#121D28] border border-[#121D28] dark:border-[#121D28] text-gray-900 text-sm rounded-lg block w-20 border p-2.5 dark:bg-[#121D28] dark:placeholder-gray-500 dark:text-white" placeholder="0" required />
-                        </div>
-                        <button className="space-y-1 flex flex-col items-end relative inline-block text-left " id="menu-button" aria-expanded="true" aria-haspopup="true">
-                            <div className="flex items-center space-x-2">
-                                <div className="flex flex-col items-center text-xs space-y-1">
-                                    <img className="w-10 h-10" src={CHAINS_DATA[chain.id]["fBTC_logo"]} />
-                                    <div>{selectToken}</div>
+    if(chain.id === ARBITRUM_SEPOLIA) {
+        return (
+            <div className="flex flex-row items-center justify-center  w-full h-4/5">
+                <div className="flex flex-col justify-between rounded-lg w-[500px] h-[270px] bg-[#304256] border border-black p-3">
+                    <div className="text-[#C7F284]">
+                        <div className="flex w-full py-1 text-2xl text-white">Redeem</div>
+                        <div className="static rounded border border-black flex justify-between w-full h-32 bg-[#121D28] flex items-center px-4">
+                            <div className="space-y-1">
+                                <div className="text-md">Amount</div>
+                                <input onChange={(e) => {estimatetBTC(e.target.value)}} type="number" id="first_name" class="focus:ring-[#121D28] focus:border-[#121D28] dark:focus:ring-[#121D28]dark:focus:border-[#121D28] bg-[#121D28] border border-[#121D28] dark:border-[#121D28] text-gray-900 text-sm rounded-lg block w-20 border p-2.5 dark:bg-[#121D28] dark:placeholder-gray-500 dark:text-white" placeholder="0" required />
+                            </div>
+                            <button className="space-y-1 flex flex-col items-end relative inline-block text-left " id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                <div className="flex items-center space-x-2">
+                                    <div className="flex flex-col items-center text-xs space-y-1">
+                                        <img className="w-10 h-10" src={CHAINS_DATA[chain.id]["fBTC_logo"]} />
+                                        <div>{selectToken}</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="text-xs text-gray-500">
-                                Balance: {tokenBalance}
-                            </div>
-                        </button>
-                    </div>
-                </div>
-                <div className="h-full">
-                    <div className="flex flex-col justify-center items-end h-full text-[#C7F284]">
-                        <div className="flex text-xs">
-                            <div className="text-white">tBTC Estimate: </div>
-                            <div className="pl-1 text-white">{tbtcEstimation}</div>
+                                <div className="text-xs text-gray-500">
+                                    Balance: {tokenBalance}
+                                </div>
+                            </button>
                         </div>
                     </div>
+                    <div className="h-full">
+                        <div className="flex flex-col justify-center items-end h-full text-[#C7F284]">
+                            <div className="flex text-xs">
+                                <div className="text-white">tBTC Estimate: </div>
+                                <div className="pl-1 text-white">{tbtcEstimation}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="w-full font-semibold">
+                        {
+                            suffienceLiquidity ? 
+                            <button onClick={() => sendRedeemTxn()} className="rounded-lg bg-[#C7F284] w-full h-12 flex items-center justify-center">Redeem</button> :
+                            <button onClick={() => sendAllowanceTxn()} className="rounded-lg bg-[#C7F284] w-full h-12 flex items-center justify-center">
+                                {
+                                    allowanceLoading ?
+                                        <div type="button" class="">
+                                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </div> : <div>Allowance</div>
+                                }
+                                
+                            </button>
+                        }
+                        
+                    </div>
                 </div>
-                <div className="w-full font-semibold">
-                    {
-                        suffienceLiquidity ? 
-                        <button onClick={() => sendRedeemTxn()} className="rounded-lg bg-[#C7F284] w-full h-12 flex items-center justify-center">Redeem</button> :
-                        <button onClick={() => sendAllowanceTxn()} className="rounded-lg bg-[#C7F284] w-full h-12 flex items-center justify-center">
-                            {
-                                allowanceLoading ?
-                                    <div type="button" class="">
-                                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                    </div> : <div>Allowance</div>
-                            }
-                            
-                        </button>
-                    }
-                    
-                </div>
+            </div>  
+        )
+    } else {
+        return (
+            <div className="flex flex-row items-center justify-center text-white text-2xl w-full h-4/5">
+                Not Supported Yet!
             </div>
-        </div>  
-    )
+        )
+    }
 }
 
 export default Redeem;

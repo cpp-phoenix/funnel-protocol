@@ -7,7 +7,7 @@ function Home () {
                 <div className="text-center">Bringing the liquidity back to Bitcoin Network</div>
                 <div className="text-4xl">We are funneling the Bitcoin liquidity back from Evm chains to Bitcoin</div>
             </div>
-            <div className="flex justify-center items-center h-40 w-full">
+            <div className="flex justify-center items-center h-72 w-full">
                 <Link className='rounded-lg text-lg p-4 text-[#C7F284] bg-[#304256] font-semibold px-6' to='/mint'>
                     Mint Now
                 </Link>

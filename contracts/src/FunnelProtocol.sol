@@ -43,6 +43,11 @@ contract FunnelProtocol {
         return priceFeeds[_token];
     }
 
+    function burnFPV(uint256 _amount) public {
+        ERC20(fpVault).transferFrom(msg.sender, address(this), _amount);
+        fpVault.burnSupply(_amount);
+    }
+
     function deposit(address _token, uint256 _amount) public {
         IERC20(_token).transferFrom(msg.sender, address(this), _amount);
         uint256 tBtcAmount = convertToShares(_token, _amount);

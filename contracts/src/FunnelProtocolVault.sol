@@ -8,9 +8,11 @@ contract FunnelProtocolVault is ERC4626 {
 
     uint256 public _totalAssets;
     address public owner;
+    address public fp;
 
     constructor(ERC20 _asset, string memory _name, string memory _symbol, address _owner) ERC4626 (_asset, _name, _symbol){
         owner = _owner;
+        fp = msg.sender;
     }
 
     modifier onlyOwner() {
@@ -18,11 +20,16 @@ contract FunnelProtocolVault is ERC4626 {
         _;
     }
 
+    modifier onlyFP() {
+        require(msg.sender == fp, "not FP");
+        _;
+    }
+
     function mintSupply(uint256 _amount, address receiver) public onlyOwner() {
         _mint(receiver, _amount);
     }
 
-    function burnSupply(uint256 _amount) public onlyOwner() {
+    function burnSupply(uint256 _amount) public onlyFP() {
         _burn(msg.sender, _amount);
     }
 
