@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Faucet from './pages/Faucet';
 import Mint from './pages/Mint';
 import Redeem from './pages/Redeem';
-import Ecosystem from './pages/Ecosystem';
+import Bridge from './pages/Bridge';
 import Navbar from './components/Navbar';
 
 import {
@@ -23,10 +23,28 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 
+export const funnel_testnet = {
+  id: 999,
+  name: 'funnel-testnet',
+  network: 'funnel-testnet',
+  iconUrl: 'https://assets.coingecko.com/coins/images/780/standard/bitcoin-cash-circle.png?1696501932',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'ETH',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: { http: ['https://funnel-testnet.alt.technology']},
+  },
+  blockExplorers: {
+    default: {name: 'funnelscan', url: 'funnel-testnet-explorer.alt.technology'}
+  }
+}
+
 export const config = getDefaultConfig({
   appName: 'Funnel Protocol',
   projectId: '07824a76188e419a3acf4226c8183b79',
-  chains: [arbitrumSepolia],
+  chains: [arbitrumSepolia, funnel_testnet],
   ssr: false, // If your dApp uses server side rendering (SSR)
 });
 
@@ -45,7 +63,7 @@ function App() {
                 <Route path='/mint' exact element={<Mint/>}/>
                 <Route path='/redeem' exact element={<Redeem/>}/>
                 <Route path="/faucet" exact element={<Faucet/>}/>
-                <Route path="/ecosystem" exact element={<Ecosystem/>}/>
+                <Route path="/bridge" exact element={<Bridge/>}/>
               </Routes>
             </Router>
           </div>  

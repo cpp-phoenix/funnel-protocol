@@ -144,7 +144,7 @@ function Redeem () {
                         <button className="space-y-1 flex flex-col items-end relative inline-block text-left " id="menu-button" aria-expanded="true" aria-haspopup="true">
                             <div className="flex items-center space-x-2">
                                 <div className="flex flex-col items-center text-xs space-y-1">
-                                    <img className="w-10 h-10" src={CHAINS_DATA[ARBITRUM_SEPOLIA]["fBTC_logo"]} />
+                                    <img className="w-10 h-10" src={CHAINS_DATA[chain.id]["fBTC_logo"]} />
                                     <div>{selectToken}</div>
                                 </div>
                             </div>

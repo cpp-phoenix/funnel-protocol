@@ -46,9 +46,9 @@ function Faucet () {
                 {
                     TOKENS_LIST.map(token => {
                         return (
-                            <button onClick={() => mintFaucet(CHAINS_DATA[ARBITRUM_SEPOLIA]["tokens"][token]["address"], CHAINS_DATA[ARBITRUM_SEPOLIA]["tokens"][token]["faucetAmount"])} className="rounded-lg hover:bg-[#121D28] p-2 text-white flex justify-between items-center space-x-2">
+                            <button onClick={() => mintFaucet(CHAINS_DATA[chain.id]["tokens"][token]["address"], CHAINS_DATA[chain.id]["tokens"][token]["faucetAmount"])} className="rounded-lg hover:bg-[#121D28] p-2 text-white flex justify-between items-center space-x-2">
                                 <div className="flex space-x-2 items-center">
-                                    <div><img className="w-10 h-10" src={CHAINS_DATA[ARBITRUM_SEPOLIA]["tokens"][token]["logo"]}/></div>
+                                    <div><img className="w-10 h-10" src={CHAINS_DATA[chain.id]["tokens"][token]["logo"]}/></div>
                                     <div>Mint</div>
                                     <div>{token}</div>
                                 </div>
