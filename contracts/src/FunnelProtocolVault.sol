@@ -18,6 +18,14 @@ contract FunnelProtocolVault is ERC4626 {
         _;
     }
 
+    function mintSupply(uint256 _amount) public onlyOwner() {
+        _mint(msg.sender, _amount);
+    }
+
+    function burnSupply(uint256 _amount) public onlyOwner() {
+        _burn(msg.sender, _amount);
+    }
+
     function totalAssets() public view override returns (uint256) {
         return _totalAssets;
     }
