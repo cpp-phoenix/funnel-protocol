@@ -16,12 +16,12 @@ contract FunnelProtocol {
     address public owner;
     mapping(address => address) public priceFeeds;
     mapping(address => bool) public activeTokens;
-    IERC20 public asset;
+    ERC20 public asset;
 
     constructor(address _asset) {
-        asset = IERC20(_asset);
+        asset = ERC20(_asset);
         owner = msg.sender;
-        fpVault = new FunnelProtocol(asset, 'funnel BTC ', 'fBTC', msg.sender);
+        fpVault = new FunnelProtocolVault(asset, 'funnel BTC ', 'fBTC', msg.sender);
     }
 
     modifier onlyOwner() {
@@ -34,29 +34,33 @@ contract FunnelProtocol {
         activeTokens[_token] = true;
     }
 
-    function removeFeed(address _token, address _feed) public onlyOwner() {
+    function removeFeed(address _token) public onlyOwner() {
         priceFeeds[_token] = address(0);
         activeTokens[_token] = false;
     }
 
-    function getFeed(address _token) public view {
+    function getFeed(address _token) public view returns(address) {
         return priceFeeds[_token];
     }
 
-    function deposit(uint256 token, uint256 amount) public {
+    function deposit(address _token, uint256 _amount) public {
         IERC20(_token).transferFrom(msg.sender, address(this), _amount);
-        fpVault.deposit(convertToShares(token, amount));
+        uint256 tBtcAmount = convertToShares(_token, _amount);
+
+        ERC20(fpVault.asset()).approve(address(fpVault), tBtcAmount);
+        
+        fpVault.deposit(tBtcAmount, msg.sender);
     }
 
-    function redeem( uint256 shares) public {
-        IERC20(fpVault).transferFrom(msg.sender, address(this), _amount);
+    function redeem(uint256 shares) public {
+        fpVault.transferFrom(msg.sender, address(this), shares);
         fpVault.redeem(shares, msg.sender, address(this));
     }
 
     function convertToShares(address _token, uint256 _amount) public view virtual returns (uint256) {
         if(_token != address(asset)) {
             require(activeTokens[_token], "token not supported yet");
-            uint256 convertedAmount = currencyConversion(_token, asset);
+            uint256 convertedAmount = currencyConversion(_token, address(asset), _amount);
             return fpVault.convertToShares(convertedAmount);
         } else {
             return fpVault.convertToShares(_amount);
@@ -67,17 +71,17 @@ contract FunnelProtocol {
         return fpVault.convertToAssets(shares);
     }
 
-    function currencyConversion(address _token, address _asset, address _amount) public view returns(uint256) {
-        uint256 priceSource = latestRoundData(_token);
-        uint256 priceDest = latestRoundData(_asset);
-        return (amount * priceDest) / priceSource;
+    function currencyConversion(address _token, address _asset, uint256 _amount) public view returns(uint256) {
+        uint256 priceSource = uint256(latestRoundData(_token));
+        uint256 priceDest = uint256(latestRoundData(_asset));
+        return (_amount * priceSource) / priceDest;
     }
 
-    function latestRoundData(address _token) external view
+    function latestRoundData(address _token) public view
     returns (int256 answer) {
         address _feed = priceFeeds[_token];
         if(_feed != address(0)) {
-            (uint80, answer, uint256, uint256, uint80) = AggregatorV3Interface(_feed).latestRoundData();
+            (, answer, , , ) = AggregatorV3Interface(_feed).latestRoundData();
 
         }
         return answer;

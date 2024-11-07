@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-only
 pragma solidity >=0.8.19;
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/extensions/ERC4626.sol";
+import "https://github.com/transmissions11/solmate/blob/main/src/tokens/ERC4626.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol";
 
 contract FunnelProtocolVault is ERC4626 {
@@ -20,10 +20,6 @@ contract FunnelProtocolVault is ERC4626 {
 
     function totalAssets() public view override returns (uint256) {
         return _totalAssets;
-    }
-
-    function totalAssets() override public view returns (uint256) {
-        return 0;
     }
 
     function afterDeposit(uint256 assets, uint256 shares) internal override {
