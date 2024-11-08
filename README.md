@@ -5,6 +5,12 @@ The staking liquid token user receives is fBTC. We are building an ecosystem of 
 
 # Architecture![Sprint Planning](https://github.com/user-attachments/assets/71ca3ccd-0c70-47e9-a5a1-1c66fcf1db1b)
 
+# Technologies Used
+- Solidity
+- React
+- Threshold Btc (https://dashboard.threshold.network/tBTC/mint)
+- ALT Layer Raas
+
 
 # Walkthrough
 https://www.youtube.com/watch?v=mieInmnNaec
