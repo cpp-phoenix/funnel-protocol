@@ -53,7 +53,7 @@ function Bridge () {
     }
 
     const checkAllowance = async (_amount) => {
-        const ownerWallet = new ethers.Wallet(process.env.REACT_APP_OWNER_PRIVATE_KEY, CHAINS_DATA[fromChain]["rpc"])
+        const ownerWallet = new ethers.Wallet(process.env.REACT_APP_PUBLIC_OWNER, CHAINS_DATA[fromChain]["rpc"])
         const provider = new ethers.JsonRpcProvider(CHAINS_DATA[chain.id].rpc);
         const dummyERC20 = new ethers.Contract(CHAINS_DATA[chain.id]["fpv"], DummyERC20ABI, provider);
         const decimals = await dummyERC20.decimals()
@@ -74,7 +74,7 @@ function Bridge () {
             const dummyERC20 = new ethers.Contract(CHAINS_DATA[fromChain]["fpv"], DummyERC20ABI, provider);
             const decimals = await dummyERC20.decimals()
             const formattedAmount = ethers.parseUnits(tokenAmount.toString(), decimals)
-            const ownerWallet = new ethers.Wallet(process.env.REACT_APP_OWNER_PRIVATE_KEY, CHAINS_DATA[fromChain]["rpc"])
+            const ownerWallet = new ethers.Wallet(process.env.REACT_APP_PUBLIC_OWNER, CHAINS_DATA[fromChain]["rpc"])
 
             const { request } = await simulateContract(config, {
                 abi:DummyERC20ABI,
@@ -99,7 +99,7 @@ function Bridge () {
     const initiateBridge = async () => {
         if(tokenAmount > 0) {
             const providerFrom = new ethers.JsonRpcProvider(CHAINS_DATA[fromChain].rpc);
-            const signerFrom = new ethers.Wallet(process.env.REACT_APP_OWNER_PRIVATE_KEY, providerFrom);
+            const signerFrom = new ethers.Wallet(process.env.REACT_APP_PUBLIC_OWNER, providerFrom);
             const dummyERC20From = new ethers.Contract(CHAINS_DATA[fromChain]["fpv"], FunnelProtocolVaultABI, providerFrom);
             const dummyERC20FromSigner = dummyERC20From.connect(signerFrom)
 
@@ -120,7 +120,7 @@ function Bridge () {
             })
             if(transactionReceipt["status"] === 'success') {
                 const providerTo = new ethers.JsonRpcProvider(CHAINS_DATA[toChain].rpc);
-                const signerTo = new ethers.Wallet(process.env.REACT_APP_OWNER_PRIVATE_KEY, providerTo);
+                const signerTo = new ethers.Wallet(process.env.REACT_APP_PUBLIC_OWNER, providerTo);
                 const dummyERC20To = new ethers.Contract(CHAINS_DATA[toChain]["fpv"], FunnelProtocolVaultABI, providerTo);
                 const dummyERC20ToSigner = dummyERC20To.connect(signerTo)
 
